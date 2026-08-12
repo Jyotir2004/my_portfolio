@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Jyotiraditya Khatua — Generative AI Engineer Portfolio",
-  description: "Portfolio of Jyotiraditya Khatua, Generative AI & AI/ML Engineer specializing in Python, FastAPI, LangChain, LangGraph, RAG pipelines, and Autonomous AI Agents. Rectified Pass-Out Batch 2022–2026.",
+  description: "Portfolio of Jyotiraditya Khatua, Generative AI & AI/ML Engineer specializing in Python, FastAPI, LangChain, LangGraph, RAG pipelines, and Autonomous AI Agents. Pass-Out Batch 2022–2026.",
   keywords: [
     "Jyotiraditya Khatua",
     "Generative AI Engineer",

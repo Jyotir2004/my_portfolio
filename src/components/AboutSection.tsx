@@ -28,7 +28,7 @@ export const AboutSection: React.FC = () => {
             <span>BACKGROUND & ACADEMICS</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            About Me & <span className="gradient-text-cyan-purple">Rectified Education</span>
+            About Me & <span className="gradient-text-cyan-purple">Education</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-3">
             Combining robust computer science fundamentals with hands-on Generative AI, RAG, and AI Agent development.
@@ -86,7 +86,7 @@ export const AboutSection: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Right Column: Education Timeline (Rectified) */}
+          {/* Right Column: Education Timeline */}
           <motion.div 
             id="education"
             initial={{ opacity: 0, x: 20 }}
@@ -99,25 +99,15 @@ export const AboutSection: React.FC = () => {
               <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
                 <GraduationCap className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold text-white">Education History (Rectified Batch)</h3>
+              <h3 className="text-xl font-bold text-white">Education & Qualifications</h3>
             </div>
 
             <div className="space-y-6">
               {EDUCATION_LIST.map((edu, idx) => (
                 <div 
                   key={idx} 
-                  className={`glass-card rounded-2xl p-6 relative border transition-all ${
-                    edu.rectifiedNotice ? 'border-cyan-500/40 bg-gradient-to-br from-slate-900/90 to-cyan-950/20' : 'border-slate-800'
-                  }`}
+                  className="glass-card rounded-2xl p-6 relative border border-slate-800"
                 >
-                  {/* Rectified badge */}
-                  {edu.rectifiedNotice && (
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs font-bold mb-3">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      <span>{edu.rectifiedNotice}</span>
-                    </div>
-                  )}
-
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
                     <h4 className="text-lg font-bold text-white leading-snug">
                       {edu.degree}

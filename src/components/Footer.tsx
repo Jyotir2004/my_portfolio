@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
     <footer className="bg-slate-950 border-t border-slate-800/80 py-12 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         
-        {/* Left: Brand & Rectified notice */}
+        {/* Left: Brand & Batch info */}
         <div className="flex flex-col items-center md:items-start gap-2">
           <a href="#" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 p-[1px]">
@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
 
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Graduation Batch: <strong className="text-slate-300">{PERSONAL_INFO.rectifiedPassout}</strong> (Passing 2026)</span>
+            <span>Graduation Batch: <strong className="text-slate-300">{PERSONAL_INFO.passoutBatch}</strong> (Passing 2026)</span>
           </div>
         </div>
 

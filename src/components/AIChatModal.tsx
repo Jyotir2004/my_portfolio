@@ -34,7 +34,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
     {
       id: '1',
       sender: 'ai',
-      text: `Hello! I am Jyotiraditya's AI Portfolio Assistant powered by FastAPI backend. Ask me about his projects, skills, Mobcoder experience, or rectified 2022–2026 pass-out batch!`,
+      text: `Hello! I am Jyotiraditya's AI Portfolio Assistant powered by FastAPI backend. Ask me about his projects, skills, Mobcoder experience, or 2022–2026 pass-out batch!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -52,7 +52,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
 
   const quickPrompts = [
     "hey",
-    "What is your rectified pass-out year?",
+    "What is your B.Tech pass-out year?",
     "Tell me about your experience at Mobcoder",
     "What projects have you built?",
     "What is your core tech stack?"
@@ -75,8 +75,8 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
     }
 
     // Portfolio answers
-    if (["pass-out", "pass out", "graduation", "batch", "year", "rectify"].some(k => clean.includes(k))) {
-      return "Jyotiraditya Khatua's rectified B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 (Graduation Year: 2026) from Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU) with CGPA 7.5.";
+    if (["pass-out", "pass out", "graduation", "batch", "year"].some(k => clean.includes(k))) {
+      return "Jyotiraditya Khatua's B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 (Graduation Year: 2026) from Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU) with CGPA 7.5.";
     }
     if (["mobcoder", "experience", "work", "job", "appwars", "tanvika"].some(k => clean.includes(k))) {
       return "Jyotiraditya is currently working as an AI/ML Engineer Trainee at Mobcoder (Noida), building AI backend services with FastAPI, LLMs, RAG, and LangGraph. He previously worked as a Data Science Intern at Appwars Technologies and Data Analytics Intern at Tanvika Software.";

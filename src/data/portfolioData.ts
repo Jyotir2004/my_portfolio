@@ -37,7 +37,6 @@ export interface Education {
   institution: string;
   affiliation?: string;
   period: string;
-  rectifiedNotice?: string;
   cgpa?: string;
   details: string[];
 }
@@ -52,18 +51,9 @@ export const PERSONAL_INFO = {
   github: "https://github.com/Jyotir2004",
   linkedin: "https://linkedin.com/in/Jyotiraditya-Khatua",
   status: "Open for Generative AI & AI/ML Engineer Roles",
-  rectifiedPassout: "2022 – 2026", // Rectified pass out batch
+  passoutBatch: "2022 – 2026",
   passoutYear: "2026",
   bio: "Generative AI Engineer specializing in Python backend development, LLMs, RAG, AI Agents, and Machine Learning. Experienced in building and deploying production-grade intelligent AI applications using FastAPI, LangChain, LangGraph, OpenAI/Gemini APIs, Vector Databases, and PyTorch."
-};
-
-export const RECTIFIED_PASSOUT_NOTICE = {
-  status: "RECTIFIED & UPDATED",
-  originalIssue: "Previous document noted 2026-27 pass out date",
-  correctedBatch: "2022 – 2026 (Graduation Year: 2026)",
-  degree: "Bachelor of Technology in Computer Science & Engineering (Specialization in AI & ML)",
-  institution: "Mahatma Gandhi Mission's College of Engineering & Technology, Noida",
-  university: "Dr. A. P. J. Abdul Kalam Technical University (AKTU)"
 };
 
 export const EDUCATION_LIST: Education[] = [
@@ -72,7 +62,6 @@ export const EDUCATION_LIST: Education[] = [
     institution: "Mahatma Gandhi Mission's College of Engineering & Technology, Noida",
     affiliation: "Affiliated with Dr. A. P. J. Abdul Kalam Technical University (AKTU)",
     period: "2022 – 2026",
-    rectifiedNotice: "Rectified Pass-Out Batch: 2022–2026 (Passing Year: 2026)",
     cgpa: "7.5 / 10",
     details: [
       "Specialized curriculum in Artificial Intelligence, Machine Learning, Deep Learning, Data Structures & Algorithms.",
@@ -336,7 +325,7 @@ export const CERTIFICATES: Certificate[] = [
 export const FAQ_AI_KNOWLEDGE = [
   {
     question: "What is your passing year / pass out batch?",
-    answer: "My B.Tech (CSE - AI & ML) passing batch is 2022 – 2026 (Graduation Year: 2026). (Note: This has been rectified in my portfolio to correct any earlier document entry of 2026-27)."
+    answer: "My B.Tech (CSE - AI & ML) passing batch is 2022 – 2026 (Graduation Year: 2026)."
   },
   {
     question: "What is your core technical expertise?",

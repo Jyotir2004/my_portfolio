@@ -44,7 +44,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 flex flex-col items-start gap-6 text-left"
           >
-            {/* Availability & Rectified Badge */}
+            {/* Availability & Pass-Out Badge */}
             <div className="flex flex-wrap items-center gap-2">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-inner">
                 <span className="relative flex h-2 w-2">
@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
 
               <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
                 <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Pass-Out Batch: <strong>{PERSONAL_INFO.rectifiedPassout}</strong></span>
+                <span>Pass-Out Batch: <strong>{PERSONAL_INFO.passoutBatch}</strong></span>
               </div>
             </div>
 
@@ -196,7 +196,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-8 border-t border-slate-800/80">
           <div className="glass-card rounded-2xl p-4 text-center border border-slate-800">
             <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400 mb-1">2022 – 2026</div>
-            <div className="text-xs text-slate-400 font-medium">Rectified Graduation Batch</div>
+            <div className="text-xs text-slate-400 font-medium">B.Tech Graduation Batch</div>
           </div>
           <div className="glass-card rounded-2xl p-4 text-center border border-slate-800">
             <div className="text-2xl sm:text-3xl font-extrabold text-purple-400 mb-1">3 Roles</div>

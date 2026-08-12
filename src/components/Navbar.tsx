@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
               </span>
               <div className="flex items-center gap-1.5 text-xs text-slate-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Batch {PERSONAL_INFO.rectifiedPassout}</span>
+                <span>Batch {PERSONAL_INFO.passoutBatch}</span>
               </div>
             </div>
           </a>
@@ -134,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
           <div className="flex flex-col gap-3">
             <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-300 text-xs flex items-center gap-2 mb-2">
               <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>Graduation Batch: {PERSONAL_INFO.rectifiedPassout} (Passing 2026)</span>
+              <span>Graduation Batch: {PERSONAL_INFO.passoutBatch} (Passing 2026)</span>
             </div>
 
             {navLinks.map((link) => (

@@ -104,7 +104,7 @@ story.append(HRFlowable(width="100%", thickness=1.5, color=cyan, spaceBefore=0, 
 story.append(Paragraph("PROFESSIONAL SUMMARY", section_heading))
 story.append(Paragraph("Generative AI Engineer specializing in Python backend development, LLMs, RAG architectures, autonomous AI Agents, and Machine Learning. Experienced in building and deploying production-grade intelligent AI services using FastAPI, LangChain, LangGraph, OpenAI/Gemini APIs, Vector Databases (FAISS/ChromaDB), and PyTorch.", body_style))
 
-# Education (Rectified)
+# Education
 story.append(Paragraph("EDUCATION", section_heading))
 story.append(Paragraph("<b>Bachelor of Technology in Computer Science & Engineering (Specialization in AI & ML)</b>", item_title))
 story.append(Paragraph("Mahatma Gandhi Mission's College of Engineering & Technology, Noida (Affiliated with AKTU) | <b>Batch: 2022 – 2026</b> (Passing Year: 2026) | <b>CGPA: 7.5</b>", item_sub))

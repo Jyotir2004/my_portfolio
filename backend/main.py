@@ -40,7 +40,7 @@ def read_root():
     return {
         "status": "online",
         "service": "Jyotiraditya Khatua Portfolio FastAPI Backend",
-        "rectified_passout": "2022-2026",
+        "passout_batch": "2022-2026",
         "developer": "Jyotiraditya Khatua"
     }
 
@@ -65,8 +65,8 @@ def portfolio_chat(request: ChatRequest):
         return ChatResponse(response="I only give data based on Jyotiraditya Khatua portfolio.")
 
     # In-context portfolio responses
-    if any(k in clean_msg for k in ["pass-out", "pass out", "graduation", "batch", "year", "rectify"]):
-        resp = ("Jyotiraditya Khatua's rectified B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 "
+    if any(k in clean_msg for k in ["pass-out", "pass out", "graduation", "batch", "year"]):
+        resp = ("Jyotiraditya Khatua's B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 "
                 "(Graduation Year: 2026) from Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU) with CGPA 7.5.")
     elif any(k in clean_msg for k in ["mobcoder", "experience", "work", "job", "appwars", "tanvika"]):
         resp = ("Jyotiraditya is currently working as an AI/ML Engineer Trainee at Mobcoder (Noida), building AI backend services with FastAPI, LLMs, RAG, and LangGraph. "

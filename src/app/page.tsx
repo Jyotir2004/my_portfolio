@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { Navbar } from '../components/Navbar';
-import { RectifiedPassoutBanner } from '../components/RectifiedPassoutBanner';
 import { HeroSection } from '../components/HeroSection';
 import { AboutSection } from '../components/AboutSection';
 import { ExperienceSection } from '../components/ExperienceSection';
@@ -21,15 +20,10 @@ export default function Home() {
       {/* Header & Navigation */}
       <Navbar onOpenAIChat={() => setIsAIChatOpen(true)} />
 
-      {/* Top Rectified Passout Notice */}
-      <div className="pt-20">
-        <RectifiedPassoutBanner />
-      </div>
-
       {/* Hero Intro */}
       <HeroSection onOpenAIChat={() => setIsAIChatOpen(true)} />
 
-      {/* About & Rectified Education */}
+      {/* About & Education */}
       <AboutSection />
 
       {/* Industry Work Experience Timeline */}
