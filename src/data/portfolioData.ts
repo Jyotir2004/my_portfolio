@@ -297,7 +297,7 @@ export const SKILLS = [
       { name: "Power BI & Dashboarding", level: 88, highlight: false },
       { name: "Matplotlib & Seaborn", level: 86, highlight: false },
       { name: "Git & GitHub", level: 90, highlight: false },
-      { name: "Cursor AI & Trae AI", level: 92, highlight: true }
+      { name: "VS Code & Jupyter Notebooks", level: 92, highlight: false }
     ]
   }
 ];

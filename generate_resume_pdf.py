@@ -139,7 +139,7 @@ story.append(Paragraph("TECHNICAL SKILLS", section_heading))
 story.append(Paragraph("• <b>Generative AI & Agents:</b> LLMs, RAG, Autonomous AI Agents, LangChain, LangGraph, LangFlow, Prompt Engineering", body_style))
 story.append(Paragraph("• <b>Machine Learning & Frameworks:</b> Python, FastAPI, Scikit-learn, PyTorch, TensorFlow, OpenCV, NLP", body_style))
 story.append(Paragraph("• <b>Databases & Analytics:</b> FAISS, ChromaDB, MySQL, SQL, Pandas, NumPy, Power BI, Streamlit", body_style))
-story.append(Paragraph("• <b>Tools & Tools:</b> Git, GitHub, VS Code, Cursor AI, Trae AI, Google Colab", body_style))
+story.append(Paragraph("• <b>Developer Tools:</b> Git, GitHub, VS Code, Google Colab, Jupyter Notebooks", body_style))
 
 # Certificates
 story.append(Paragraph("CERTIFICATIONS", section_heading))
