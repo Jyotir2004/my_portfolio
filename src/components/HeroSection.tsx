@@ -153,7 +153,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
               {/* Card Container */}
               <div className="relative w-full h-full rounded-3xl bg-slate-900/90 border border-slate-800 overflow-hidden shadow-2xl p-2 group">
                 <Image
-                  src="/profile.png"
+                  src="/profile_desk.png"
                   alt={PERSONAL_INFO.name}
                   fill
                   className="object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-500"
