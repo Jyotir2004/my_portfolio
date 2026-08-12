@@ -17,7 +17,8 @@ import {
   Code2,
   Database,
   Download,
-  FileText
+  FileText,
+  ChevronDown
 } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
 import { GithubIcon, LinkedinIcon } from './SocialIcons';
@@ -28,13 +29,13 @@ interface HeroSectionProps {
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative min-h-[90vh] flex flex-col justify-between pt-28 pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden">
       {/* Ambient background glow & grid overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow" style={{ animationDelay: '2s' }}></div>
 
-      <div className="max-w-7xl mx-auto w-full relative z-10">
+      <div className="max-w-7xl mx-auto w-full relative z-10 my-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column - Main Intro & Details */}
@@ -44,19 +45,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
             transition={{ duration: 0.6 }}
             className="lg:col-span-7 flex flex-col items-start gap-6 text-left"
           >
-            {/* Availability & Pass-Out Badge */}
+            {/* Availability Badge */}
             <div className="flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-inner">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-emerald-500/40 text-emerald-300 text-xs font-semibold shadow-inner">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
                 <span>{PERSONAL_INFO.status}</span>
-              </div>
-
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-medium">
-                <GraduationCap className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Pass-Out Batch: <strong>{PERSONAL_INFO.passoutBatch}</strong></span>
               </div>
             </div>
 
@@ -99,93 +95,93 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
 
               <button
                 onClick={onOpenAIChat}
-                className="px-4 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-cyan-500/40 text-cyan-300 font-semibold text-xs sm:text-sm transition-all duration-300 flex items-center gap-2 shadow-md hover:border-cyan-400"
+                className="px-5 py-3 rounded-xl bg-slate-900 border border-slate-700/80 hover:border-cyan-500/50 text-slate-200 hover:text-white font-semibold text-xs sm:text-sm shadow-md transition-all duration-300 flex items-center gap-2 hover:scale-[1.02]"
               >
                 <Bot className="w-4 h-4 text-cyan-400" />
                 <span>Ask AI Assistant</span>
               </button>
             </div>
 
-            {/* Social Links & Quick Contact */}
-            <div className="flex items-center gap-4 pt-4 border-t border-slate-800/80 w-full">
-              <span className="text-xs text-slate-400 font-medium uppercase tracking-wider">Connect:</span>
-              <div className="flex items-center gap-3">
-                <a
-                  href={PERSONAL_INFO.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-all hover:scale-110"
-                  title="GitHub Profile"
-                >
-                  <GithubIcon className="w-4 h-4" />
-                </a>
-                <a
-                  href={PERSONAL_INFO.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-all hover:scale-110"
-                  title="LinkedIn Profile"
-                >
-                  <LinkedinIcon className="w-4 h-4" />
-                </a>
-                <a
-                  href={`mailto:${PERSONAL_INFO.email}`}
-                  className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-all hover:scale-110"
-                  title="Send Direct Email"
-                >
-                  <Mail className="w-4 h-4" />
-                </a>
-              </div>
+            {/* Social Links */}
+            <div className="flex items-center gap-4 pt-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-slate-400">Connect:</span>
+              <a
+                href={PERSONAL_INFO.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-colors"
+                title="GitHub"
+              >
+                <GithubIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={PERSONAL_INFO.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-colors"
+                title="LinkedIn"
+              >
+                <LinkedinIcon className="w-4 h-4" />
+              </a>
+              <a
+                href={`mailto:${PERSONAL_INFO.email}`}
+                className="p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-colors"
+                title="Email"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
             </div>
           </motion.div>
 
-          {/* Right Column - Profile Image & Animated AI Orbit Cards */}
+          {/* Right Column - User Photo & Floating Tech Chips */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="lg:col-span-5 flex justify-center relative"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:col-span-5 relative flex justify-center"
           >
-            <div className="relative w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[420px]">
-              {/* Outer Glowing Ring */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-cyan-500 via-purple-600 to-emerald-400 p-1 blur-xl opacity-60 animate-pulse"></div>
-              
-              {/* Card Container */}
-              <div className="relative w-full h-full rounded-3xl bg-slate-900/90 border border-slate-800 overflow-hidden shadow-2xl p-2 group">
-                <Image
-                  src="/profile_suit.png"
-                  alt={PERSONAL_INFO.name}
-                  fill
-                  className="object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-500"
-                  priority
-                />
+            {/* Glowing Backdrop Ring */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/20 via-purple-500/20 to-emerald-500/20 rounded-3xl blur-2xl transform scale-95"></div>
 
-                {/* Overlaid Bottom Gradient & Status */}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-4 pt-12 flex flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold uppercase tracking-wider border border-cyan-500/40">
-                      AI Engineer Trainee @ Mobcoder
-                    </span>
-                  </div>
-                  <span className="text-white font-bold text-sm">{PERSONAL_INFO.name}</span>
-                  <span className="text-slate-400 text-xs">B.Tech CSE (AI & ML) • 2022–2026</span>
+            {/* Card Container */}
+            <div className="relative w-full aspect-[4/5] max-w-md rounded-3xl bg-slate-900/90 border border-slate-800 overflow-hidden shadow-2xl p-2 group">
+              <Image
+                src="/profile_suit.png"
+                alt={PERSONAL_INFO.name}
+                fill
+                className="object-cover object-top rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                priority
+              />
+
+              {/* Gradient Bottom Overlay */}
+              <div className="absolute inset-x-2 bottom-2 p-5 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent rounded-b-2xl flex flex-col justify-end">
+                <div className="inline-block self-start px-2.5 py-0.5 rounded-md bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-[10px] font-bold uppercase tracking-wider mb-1">
+                  AI Engineer Trainee @ Mobcoder
                 </div>
+                <h3 className="text-xl font-bold text-white tracking-tight">
+                  {PERSONAL_INFO.name}
+                </h3>
+                <p className="text-xs text-slate-300">
+                  B.Tech CSE (AI & ML)
+                </p>
               </div>
 
-              {/* Floating Tech Badges */}
-              <div className="absolute -top-4 -left-4 px-3 py-1.5 rounded-xl glass-panel border border-cyan-500/40 text-cyan-300 text-xs font-semibold flex items-center gap-2 shadow-lg animate-float">
-                <Zap className="w-4 h-4 text-cyan-400" />
-                <span>LangGraph & LangChain</span>
+              {/* Floating Tech Badge 1 */}
+              <div className="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-full border border-cyan-500/30 flex items-center gap-1.5 shadow-lg animate-float">
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="text-xs font-semibold text-slate-200">LangGraph & LangChain</span>
               </div>
 
-              <div className="absolute -bottom-4 -right-4 px-3 py-1.5 rounded-xl glass-panel border border-purple-500/40 text-purple-300 text-xs font-semibold flex items-center gap-2 shadow-lg animate-float" style={{ animationDelay: '1.5s' }}>
-                <Brain className="w-4 h-4 text-purple-400" />
-                <span>RAG & Vector Search</span>
+              {/* Floating Tech Badge 2 */}
+              <div className="absolute top-1/2 right-4 glass-card px-3 py-1.5 rounded-full border border-purple-500/30 flex items-center gap-1.5 shadow-lg animate-float" style={{ animationDelay: '1.5s' }}>
+                <Terminal className="w-3.5 h-3.5 text-purple-400" />
+                <span className="text-xs font-semibold text-slate-200">FastAPI Backend</span>
               </div>
 
-              <div className="absolute top-1/2 -right-8 px-3 py-1.5 rounded-xl glass-panel border border-emerald-500/40 text-emerald-300 text-xs font-semibold flex items-center gap-2 shadow-lg animate-float" style={{ animationDelay: '3s' }}>
-                <Terminal className="w-4 h-4 text-emerald-400" />
-                <span>FastAPI Backend</span>
+              {/* Floating Tech Badge 3 */}
+              <div className="absolute bottom-20 left-4 glass-card px-3 py-1.5 rounded-full border border-emerald-500/30 flex items-center gap-1.5 shadow-lg animate-float" style={{ animationDelay: '2.5s' }}>
+                <Brain className="w-3.5 h-3.5 text-emerald-400" />
+                <span className="text-xs font-semibold text-slate-200">RAG & Vector Search</span>
               </div>
             </div>
           </motion.div>
@@ -193,10 +189,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
         </div>
 
         {/* Quick Stats Grid Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 pt-8 border-t border-slate-800/80">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 pt-8 border-t border-slate-800/80">
           <div className="glass-card rounded-2xl p-4 text-center border border-slate-800">
-            <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400 mb-1">2022 – 2026</div>
-            <div className="text-xs text-slate-400 font-medium">B.Tech Graduation Batch</div>
+            <div className="text-2xl sm:text-3xl font-extrabold text-cyan-400 mb-1">Generative AI</div>
+            <div className="text-xs text-slate-400 font-medium">Agents, RAG & FastAPI</div>
           </div>
           <div className="glass-card rounded-2xl p-4 text-center border border-slate-800">
             <div className="text-2xl sm:text-3xl font-extrabold text-purple-400 mb-1">3 Roles</div>
@@ -211,6 +207,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onOpenAIChat }) => {
             <div className="text-xs text-slate-400 font-medium">Professional Certifications</div>
           </div>
         </div>
+
+        {/* Animated Scroll Down Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="flex flex-col items-center justify-center mt-10 cursor-pointer group"
+          onClick={() => {
+            const element = document.getElementById('ecosystem');
+            element?.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          <span className="text-[11px] uppercase tracking-widest text-slate-400 font-semibold mb-2 group-hover:text-cyan-400 transition-colors flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3 text-cyan-400 animate-spin" />
+            Scroll Down To Explore Portfolio
+          </span>
+          <div className="w-6 h-10 rounded-full border-2 border-slate-700 group-hover:border-cyan-400 flex items-start justify-center p-1.5 transition-colors shadow-lg">
+            <motion.div 
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1.5 h-2.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/80"
+            />
+          </div>
+          <ChevronDown className="w-4 h-4 text-slate-500 group-hover:text-cyan-400 mt-1 transition-colors animate-bounce" />
+        </motion.div>
 
       </div>
     </section>

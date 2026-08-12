@@ -22,6 +22,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
   }, []);
 
   const navLinks = [
+    { name: 'Ecosystem', href: '#ecosystem' },
     { name: 'About', href: '#about' },
     { name: 'Education', href: '#education' },
     { name: 'Experience', href: '#experience' },
@@ -53,7 +54,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
               </span>
               <div className="flex items-center gap-1.5 text-xs text-slate-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Batch {PERSONAL_INFO.passoutBatch}</span>
+                <span>Generative AI Engineer</span>
               </div>
             </div>
           </a>
@@ -64,63 +65,56 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
               <a
                 key={link.name}
                 href={link.href}
-                className="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/60 rounded-full transition-all duration-200"
+                className="px-4 py-2 rounded-full text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all duration-200"
               >
                 {link.name}
               </a>
             ))}
           </nav>
 
-          {/* Action Buttons */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Right Action Buttons */}
+          <div className="hidden md:flex items-center gap-3">
             <a
               href="/Jyotiraditya_Khatua_Resume.pdf"
               download="Jyotiraditya_Khatua_Resume.pdf"
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-slate-900 border border-purple-500/40 text-purple-300 hover:text-white hover:bg-purple-600/20 transition-all text-xs font-semibold shadow-sm"
-              title="Download Resume PDF"
+              className="px-3.5 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/40 text-purple-300 text-xs font-semibold transition-all duration-300 flex items-center gap-1.5"
             >
-              <Download className="w-3.5 h-3.5 text-purple-400" />
+              <Download className="w-3.5 h-3.5" />
               <span>Resume</span>
             </a>
 
             <button
               onClick={onOpenAIChat}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/15 to-purple-500/15 border border-cyan-500/30 text-cyan-300 hover:text-white hover:bg-cyan-500/25 transition-all text-xs font-semibold shadow-sm hover:shadow-cyan-500/20"
+              className="group relative px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-purple-500/20 hover:from-cyan-500/30 hover:to-purple-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg shadow-cyan-500/10"
             >
-              <Bot className="w-4 h-4 text-cyan-400 animate-bounce" />
+              <Bot className="w-4 h-4 text-cyan-400 group-hover:rotate-12 transition-transform" />
               <span>Ask AI Assistant</span>
-              <span className="bg-cyan-500/30 text-cyan-200 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold">
-                Live
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
               </span>
             </button>
+
             <a
               href="#contact"
-              className="px-5 py-2 text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-cyan-200 rounded-full transition-all duration-300 shadow-md shadow-cyan-500/20 hover:scale-105"
+              className="px-4 py-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 text-xs font-bold transition-all duration-300 shadow-md shadow-cyan-500/20"
             >
               Hire Me
             </a>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center gap-2">
-            <a
-              href="/Jyotiraditya_Khatua_Resume.pdf"
-              download="Jyotiraditya_Khatua_Resume.pdf"
-              className="p-2 rounded-lg bg-purple-500/10 text-purple-300 border border-purple-500/30 text-xs"
-              title="Download Resume"
-            >
-              <Download className="w-4 h-4" />
-            </a>
+          <div className="flex md:hidden items-center gap-2">
             <button
               onClick={onOpenAIChat}
-              className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs"
-              title="Ask AI"
+              className="p-2 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-400"
+              title="AI Assistant"
             >
               <Bot className="w-5 h-5" />
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-slate-900 text-slate-300 hover:text-white border border-slate-800"
+              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -132,11 +126,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-slate-950/95 border-b border-slate-800 px-4 pt-4 pb-6 mt-3 backdrop-blur-xl">
           <div className="flex flex-col gap-3">
-            <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-300 text-xs flex items-center gap-2 mb-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>Graduation Batch: {PERSONAL_INFO.passoutBatch} (Passing 2026)</span>
-            </div>
-
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -165,15 +154,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAIChat }) => {
                 className="w-full py-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-sm font-semibold flex items-center justify-center gap-2"
               >
                 <Bot className="w-4 h-4" />
-                Ask AI Assistant
+                Ask Portfolio AI Assistant
               </button>
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full py-2.5 rounded-xl bg-cyan-400 text-slate-950 text-center font-bold text-sm"
-              >
-                Get in Touch
-              </a>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Navbar } from '../components/Navbar';
 import { HeroSection } from '../components/HeroSection';
+import { EcosystemSection } from '../components/EcosystemSection';
 import { AboutSection } from '../components/AboutSection';
 import { ExperienceSection } from '../components/ExperienceSection';
 import { ProjectsSection } from '../components/ProjectsSection';
@@ -22,6 +23,9 @@ export default function Home() {
 
       {/* Hero Intro */}
       <HeroSection onOpenAIChat={() => setIsAIChatOpen(true)} />
+
+      {/* Interactive AI Architecture Ecosystem */}
+      <EcosystemSection />
 
       {/* About & Education */}
       <AboutSection />

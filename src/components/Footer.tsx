@@ -29,7 +29,7 @@ export const Footer: React.FC = () => {
 
           <div className="flex items-center gap-2 text-xs text-slate-400">
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Graduation Batch: <strong className="text-slate-300">{PERSONAL_INFO.passoutBatch}</strong> (Passing 2026)</span>
+            <span>Generative AI Engineer & AI/ML Specialist</span>
           </div>
         </div>
 
