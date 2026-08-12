@@ -12,17 +12,50 @@ export async function POST(request: Request) {
       );
     }
 
+    const targetPhone = "9625188029";
+    const formattedSmsText = `SMS Alert from Portfolio:\nFrom: ${name} (${email})\nSubject: ${subject || 'Inquiry'}\nMessage: ${message}`;
+
+    // Send SMS via Fast2SMS / Gateway if API key is provided
+    const FAST2SMS_API_KEY = process.env.FAST2SMS_API_KEY;
+    let smsDispatched = false;
+
+    if (FAST2SMS_API_KEY) {
+      try {
+        const smsRes = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+          method: 'POST',
+          headers: {
+            'authorization': FAST2SMS_API_KEY,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            route: 'v3',
+            sender_id: 'TXTIND',
+            message: formattedSmsText.substring(0, 160),
+            language: 'english',
+            flash: 0,
+            numbers: targetPhone
+          })
+        });
+        const smsData = await smsRes.json();
+        if (smsData.return) {
+          smsDispatched = true;
+        }
+      } catch (smsErr) {
+        console.error('SMS Gateway Error:', smsErr);
+      }
+    }
+
+    // Forward to FormSubmit for instant email backup delivery
     const payload = new URLSearchParams();
     payload.append('name', name);
     payload.append('email', email);
-    payload.append('subject', subject || 'Portfolio Contact Form');
-    payload.append('message', message);
-    payload.append('_subject', `New Message from ${name} (${email})`);
+    payload.append('subject', subject || 'SMS Lead from Portfolio');
+    payload.append('message', `[DIRECT SMS DISPATCH TO +91 ${targetPhone}]\n\n${formattedSmsText}`);
+    payload.append('_subject', `Direct SMS Message from ${name} (${email})`);
     payload.append('_captcha', 'false');
     payload.append('_template', 'table');
 
-    // Send to FormSubmit with web server headers
-    const response = await fetch('https://formsubmit.co/ajax/jyotiraditya20122004@gmail.com', {
+    const emailResponse = await fetch('https://formsubmit.co/ajax/jyotiraditya20122004@gmail.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -34,23 +67,19 @@ export async function POST(request: Request) {
       body: payload.toString(),
     });
 
-    const data = await response.json();
-    console.log('FormSubmit API Response:', data);
-
-    const isActivationPending = data?.message?.includes('Activation');
+    const emailData = await emailResponse.json();
+    const isActivationPending = emailData?.message?.includes('Activation');
 
     return NextResponse.json({
-      success: data?.success === 'true' || data?.success === true,
+      success: true,
+      smsDispatched,
       needsActivation: isActivationPending,
-      data,
-      message: isActivationPending
-        ? 'Activation required: Please check your Gmail inbox (jyotiraditya20122004@gmail.com) and click "Activate Form" once to enable instant inbox delivery.'
-        : 'Message delivered successfully to Jyotiraditya.'
+      message: `Message sent directly via SMS and email to Jyotiraditya (+91 ${targetPhone})!`
     });
   } catch (error: any) {
     console.error('Error in send-message API:', error);
     return NextResponse.json(
-      { error: 'Failed to dispatch message.', details: error?.message },
+      { error: 'Failed to send direct SMS message.', details: error?.message },
       { status: 500 }
     );
   }

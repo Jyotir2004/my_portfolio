@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Copy, Check, Sparkles, MessageSquare, Download, FileText, Smartphone, ExternalLink } from 'lucide-react';
 import { PERSONAL_INFO } from '../data/portfolioData';
-import { GithubIcon, LinkedinIcon, WhatsAppIcon } from './SocialIcons';
+import { GithubIcon, LinkedinIcon, WhatsAppIcon, GmailIcon } from './SocialIcons';
 
 export const ContactSection: React.FC = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
@@ -76,16 +76,23 @@ export const ContactSection: React.FC = () => {
     return `https://wa.me/${rawNumber}`;
   };
 
-  const getMailtoLink = () => {
-    const subject = formState.subject || 'Portfolio Inquiry';
+  const getGmailWebLink = () => {
+    const targetEmail = "jyotiraditya20122004@gmail.com";
+    const subject = formState.subject || `Portfolio Message from ${formState.name || 'Visitor'}`;
     const body = constructFormattedMessage();
-    return `mailto:${PERSONAL_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    return `https://mail.google.com/mail/?view=cm&fs=1&to=${targetEmail}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const getSmsAppUrl = () => {
+    const smsNumber = "9625188029";
+    const body = constructFormattedMessage();
+    return `sms:+91${smsNumber}?body=${encodeURIComponent(body)}`;
   };
 
   return (
     <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-semibold mb-3">
@@ -96,12 +103,12 @@ export const ContactSection: React.FC = () => {
             Get In <span className="gradient-text-cyan-purple">Touch</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-3">
-            Interested in collaboration, Generative AI engineering roles, or consulting? Send me a message directly or chat on WhatsApp!
+            Interested in collaboration, Generative AI engineering roles, or consulting? Reach out via web form, SMS App, Gmail, or WhatsApp!
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
+
           {/* Left Column: Direct Contact Info Cards */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -251,18 +258,18 @@ export const ContactSection: React.FC = () => {
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xl font-bold text-white">Send a Message</h3>
                 <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
-                  Direct Message
+                  Multiple Direct Methods
                 </span>
               </div>
               <p className="text-xs text-slate-400 mb-6">
-                Enter your Gmail / Email and message details below to send a message directly to <strong>Jyotiraditya</strong>.
+                Fill out the details below to send a message via Direct API, open Google Messages SMS App, Gmail, or WhatsApp.
               </p>
 
               {activationNotice && (
                 <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex flex-col gap-2">
                   <div className="font-bold flex items-center gap-2 text-amber-400">
                     <Sparkles className="w-4 h-4" />
-                    <span>Action Required to Receive Emails:</span>
+                    <span>Action Required for Email Backup Delivery:</span>
                   </div>
                   <p>
                     FormSubmit sent an activation email to <strong>jyotiraditya20122004@gmail.com</strong>.
@@ -331,32 +338,52 @@ export const ContactSection: React.FC = () => {
                   ></textarea>
                 </div>
 
-                {/* Send & WhatsApp Action Bar */}
-                <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                  {/* Send Direct Message Button */}
+                {/* Send Action Bar */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                  {/* Option 1: Direct Web API Submit (Without opening apps) */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    className="py-3.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs sm:text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
                       <span>Sending Message...</span>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Send Message</span>
+                        <span>Submit</span>
                       </>
                     )}
                   </button>
 
-                  {/* WhatsApp Chat Button next to Send */}
+                  {/* Option 2: Open Google Messages App directly */}
+                  <a
+                    href={getSmsAppUrl()}
+                    className="py-3.5 px-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-2 border border-purple-400/30 cursor-pointer"
+                  >
+                    <Smartphone className="w-4 h-4 text-white" />
+                    <span>Send message through (Google Messages)</span>
+                  </a>
+
+                  {/* Option 3: Send via Gmail Webmail Button */}
+                  <a
+                    href={getGmailWebLink()}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="py-3.5 px-4 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-rose-600/25 transition-all flex items-center justify-center gap-2 border border-rose-400/30 cursor-pointer"
+                  >
+                    <GmailIcon className="w-4 h-4 text-white" />
+                    <span>Send via Gmail</span>
+                  </a>
+
+                  {/* Option 4: WhatsApp Chat Button */}
                   <a
                     href={getWhatsAppLink()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 border border-emerald-400/30 cursor-pointer"
+                    className="py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 border border-emerald-400/30 cursor-pointer"
                   >
-                    <WhatsAppIcon className="w-5 h-5 text-white" />
+                    <WhatsAppIcon className="w-4 h-4 text-white" />
                     <span>Chat on WhatsApp</span>
                   </a>
                 </div>
@@ -369,4 +396,3 @@ export const ContactSection: React.FC = () => {
     </section>
   );
 };
-
