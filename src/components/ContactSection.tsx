@@ -34,41 +34,37 @@ export const ContactSection: React.FC = () => {
     return `Hello Jyotiraditya,\n\n${[nameStr, emailStr, subjectStr, msgStr].filter(Boolean).join('\n')}`;
   };
 
-  const handleSendSMS = async (e: React.FormEvent) => {
+  const [activationNotice, setActivationNotice] = useState(false);
+
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setActivationNotice(false);
 
-    const fullMessage = constructFormattedMessage();
-    const smsNumber = "9625188029";
-    const smsUrl = `sms:+91${smsNumber}?body=${encodeURIComponent(fullMessage)}`;
-
-    // Trigger device SMS application directly
-    window.location.href = smsUrl;
-
-    // Send fallback / background email via FormSubmit API to ensure reachability to owner's inbox as well
     try {
-      await fetch("https://formsubmit.co/ajax/jyotiraditya20122004@gmail.com", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json" 
-        },
-        body: JSON.stringify({
-          name: formState.name,
-          email: formState.email,
-          subject: formState.subject,
-          message: formState.message,
-          _subject: `Portfolio Message from ${formState.name} (${formState.email})`
-        })
+      const res = await fetch('/api/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formState)
       });
+
+      const data = await res.json();
+      console.log('Contact form dispatch result:', data);
+
+      if (data.needsActivation) {
+        setActivationNotice(true);
+      } else {
+        setSubmitted(true);
+        setTimeout(() => setSubmitted(false), 6000);
+      }
     } catch (error) {
-      console.log('Form submit backup trigger:', error);
+      console.log('Form submit dispatch error:', error);
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 6000);
     }
 
     setIsSubmitting(false);
-    setSubmitted(true);
     setFormState({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setSubmitted(false), 6000);
   };
 
   const getWhatsAppLink = () => {
@@ -78,6 +74,12 @@ export const ContactSection: React.FC = () => {
       return `https://wa.me/${rawNumber}?text=${encodeURIComponent(text)}`;
     }
     return `https://wa.me/${rawNumber}`;
+  };
+
+  const getMailtoLink = () => {
+    const subject = formState.subject || 'Portfolio Inquiry';
+    const body = constructFormattedMessage();
+    return `mailto:${PERSONAL_INFO.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -94,7 +96,7 @@ export const ContactSection: React.FC = () => {
             Get In <span className="gradient-text-cyan-purple">Touch</span>
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-3">
-            Interested in collaboration, Generative AI engineering roles, or consulting? Send me a message via SMS or chat on WhatsApp!
+            Interested in collaboration, Generative AI engineering roles, or consulting? Send me a message directly or chat on WhatsApp!
           </p>
         </div>
 
@@ -142,7 +144,7 @@ export const ContactSection: React.FC = () => {
                 <div>
                   <div className="text-xs text-emerald-400 font-bold uppercase tracking-wider">WhatsApp Direct Chat</div>
                   <div className="text-sm sm:text-base font-bold text-white group-hover:text-emerald-300 transition-colors">
-                    +91 9625188029
+                    Jyotiraditya
                   </div>
                 </div>
               </div>
@@ -175,16 +177,16 @@ export const ContactSection: React.FC = () => {
               </button>
             </div>
 
-            {/* Phone & SMS Card */}
+            {/* Phone & Contact Card */}
             <div className="glass-card rounded-3xl p-6 border border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="p-3.5 rounded-2xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-400 font-medium">Phone / SMS Number</div>
+                  <div className="text-xs text-slate-400 font-medium">Phone / SMS Contact</div>
                   <a href={`tel:${PERSONAL_INFO.phone}`} className="text-sm sm:text-base font-bold text-white hover:text-purple-400 transition-colors">
-                    {PERSONAL_INFO.phone}
+                    Jyotiraditya
                   </a>
                 </div>
               </div>
@@ -192,7 +194,7 @@ export const ContactSection: React.FC = () => {
               <button
                 onClick={() => copyToClipboard(PERSONAL_INFO.phone, 'phone')}
                 className="p-2.5 rounded-xl bg-slate-900 text-slate-300 hover:text-white border border-slate-800"
-                title="Copy Phone Number"
+                title="Copy Contact Number"
               >
                 {copiedPhone ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
               </button>
@@ -249,21 +251,36 @@ export const ContactSection: React.FC = () => {
               <div className="flex items-center justify-between mb-2">
                 <h3 className="text-xl font-bold text-white">Send a Message</h3>
                 <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">
-                  Reaches via SMS & Email
+                  Direct Message
                 </span>
               </div>
               <p className="text-xs text-slate-400 mb-6">
-                Enter your Gmail / Email and message details below. Clicking send delivers the message as an SMS directly to <strong>+91 9625188029</strong>!
+                Enter your Gmail / Email and message details below to send a message directly to <strong>Jyotiraditya</strong>.
               </p>
+
+              {activationNotice && (
+                <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex flex-col gap-2">
+                  <div className="font-bold flex items-center gap-2 text-amber-400">
+                    <Sparkles className="w-4 h-4" />
+                    <span>Action Required to Receive Emails:</span>
+                  </div>
+                  <p>
+                    FormSubmit sent an activation email to <strong>jyotiraditya20122004@gmail.com</strong>.
+                  </p>
+                  <p className="text-slate-300">
+                    Please open your Gmail inbox (or Spam folder), look for the email from FormSubmit titled <em>"Action Required: Activate FormSubmit"</em> and click <strong>"Activate Form"</strong> once.
+                  </p>
+                </div>
+              )}
 
               {submitted && (
                 <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400" />
-                  <span>Message dispatched! SMS app opened & email delivered to Jyotiraditya.</span>
+                  <span>Thank you! Your message has been sent directly to Jyotiraditya.</span>
                 </div>
               )}
 
-              <form onSubmit={handleSendSMS} className="space-y-4">
+              <form onSubmit={handleSendMessage} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-semibold text-slate-300 mb-1.5">Your Name</label>
@@ -316,18 +333,18 @@ export const ContactSection: React.FC = () => {
 
                 {/* Send & WhatsApp Action Bar */}
                 <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
-                  {/* Send SMS Button */}
+                  {/* Send Direct Message Button */}
                   <button
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full sm:flex-1 py-3.5 px-5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {isSubmitting ? (
-                      <span>Opening SMS...</span>
+                      <span>Sending Message...</span>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
-                        <span>Send Message (SMS)</span>
+                        <span>Send Message</span>
                       </>
                     )}
                   </button>

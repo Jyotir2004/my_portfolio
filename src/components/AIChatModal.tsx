@@ -88,7 +88,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
       return "Core Skills & Stack:\n• Generative AI & Agents: LLMs, RAG, LangChain, LangGraph, FAISS, ChromaDB\n• Backend & ML: Python, FastAPI, PyTorch, Scikit-learn, OpenCV, MySQL\n• Analytics: Pandas, NumPy, Power BI, Streamlit.";
     }
     if (["contact", "email", "phone", "whatsapp", "sms", "resume", "github", "linkedin"].some(k => clean.includes(k))) {
-      return "Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Phone / SMS: +91 9625188029\n• WhatsApp: https://wa.me/9625188029\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: PDF download available on the site!";
+      return "Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Direct Contact / SMS: Jyotiraditya (+91 9625188029)\n• WhatsApp: https://wa.me/9625188029 (Chat with Jyotiraditya)\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: PDF download available on the site!";
     }
 
     return "Jyotiraditya Khatua is a Generative AI Engineer specializing in Python, FastAPI, RAG architectures, and LangGraph multi-agent systems. He is a 2022–2026 B.Tech CSE (AI-ML) graduate from AKTU Noida.";
