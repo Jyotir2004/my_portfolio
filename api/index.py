@@ -54,8 +54,8 @@ def portfolio_chat(request: ChatRequest):
                 "\n4. OpenCV & CNN Real-Time Face Recognition Attendance System.")
     elif any(k in clean_msg for k in ["skill", "stack", "python", "fastapi", "rag", "langchain"]):
         resp = ("Core Skills & Stack:\n• Generative AI & Agents: LLMs, RAG, LangChain, LangGraph, FAISS, ChromaDB\n• Backend & ML: Python, FastAPI, PyTorch, Scikit-learn, OpenCV, MySQL\n• Analytics: Pandas, NumPy, Power BI, Streamlit.")
-    elif any(k in clean_msg for k in ["contact", "email", "phone", "resume", "github", "linkedin"]):
-        resp = ("Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Phone: +91 9625188029\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: Download link available in header!")
+    elif any(k in clean_msg for k in ["contact", "email", "phone", "whatsapp", "sms", "resume", "github", "linkedin"]):
+        resp = ("Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Phone / SMS: +91 9625188029\n• WhatsApp: https://wa.me/9625188029\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: Download link available in header!")
     else:
         resp = ("Jyotiraditya Khatua is a Generative AI Engineer specializing in Python, FastAPI, RAG architectures, and LangGraph multi-agent systems. He is a 2022–2026 B.Tech CSE (AI-ML) graduate from AKTU Noida.")
 
