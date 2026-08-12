@@ -1,12 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import re
+import requests
+import json
 
 app = FastAPI(
-    title="Jyotiraditya Khatua Portfolio API",
-    description="FastAPI Backend for Generative AI Portfolio & Knowledge Chatbot",
-    version="1.0.0"
+    title="Jyotiraditya Khatua Portfolio Groq API",
+    description="FastAPI Backend for Groq GPT OSS 120B Tool-Calling & RAG Chatbot",
+    version="2.0.0"
 )
 
 app.add_middleware(
@@ -19,72 +20,171 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
+    messagesHistory: list = []
 
 class ChatResponse(BaseModel):
     response: str
     status: str = "success"
 
-PORTFOLIO_KEYWORDS = [
-    "jyotiraditya", "khatua", "pass-out", "pass out", "passing", "batch", "year", "2022", "2026",
-    "b.tech", "aktu", "noida", "mobcoder", "appwars", "tanvika", "experience", "internship", "trainee",
-    "medsync", "travel planner", "langgraph", "langchain", "rag", "fastapi", "python", "streamlit",
-    "face recognition", "opencv", "knn", "iris", "sentiment", "project", "projects", "skill", "skills",
-    "certif", "ibm", "intellipaat", "contact", "email", "phone", "resume", "github", "linkedin", "education",
-    "cgpa", "ai engineer", "generative ai", "llm", "llms", "agent", "agents", "vector"
+import os
+
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
+MODEL_NAME = "openai/gpt-oss-120b"
+
+PORTFOLIO_KNOWLEDGE = {
+    "personal_info": {
+        "name": "Jyotiraditya Khatua",
+        "role": "Generative AI Engineer",
+        "passout_batch": "2022 – 2026 (Graduation Year: 2026)",
+        "institution": "Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU)",
+        "degree": "B.Tech in Computer Science Engineering (Specialization in AI & ML)",
+        "cgpa": "7.5 / 10",
+        "email": "jyotiraditya20122004@gmail.com",
+        "phone": "+91 9625188029",
+        "whatsapp": "https://wa.me/9625188029",
+        "location": "Hoshiyarpur, Sector 51, Noida, Uttar Pradesh, India",
+        "github": "https://github.com/Jyotir2004",
+        "linkedin": "https://linkedin.com/in/Jyotiraditya-Khatua"
+    },
+    "experiences": [
+        {
+            "role": "AI/ML Engineer Trainee",
+            "company": "Mobcoder (Noida, UP)",
+            "period": "Mar 2026 – Present (Current)"
+        },
+        {
+            "role": "Data Science Intern",
+            "company": "Appwars Technologies",
+            "period": "Sep 2024 – Feb 2025"
+        },
+        {
+            "role": "Data Analytics Intern",
+            "company": "Tanvika Software",
+            "period": "Jun 2024 – Aug 2024"
+        }
+    ],
+    "projects": [
+        "MedSync (AI Healthcare Assistant using FastAPI & Medical RAG)",
+        "Multi-Agent AI Travel Planner (LangGraph State Workflows)",
+        "Streamlit AI Sentiment Analysis Suite",
+        "OpenCV & CNN Real-Time Face Recognition Attendance"
+    ]
+}
+
+TOOLS = [
+    {
+        "type": "function",
+        "function": {
+            "name": "greet_user",
+            "description": "Greet the user warmly and introduce Jyotiraditya Khatua's AI Assistant.",
+            "parameters": {"type": "object", "properties": {"greeting_type": {"type": "string"}}}
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "query_portfolio_knowledge",
+            "description": "RAG tool to fetch facts, experience, projects, pass-out batch (2022-2026), skills, or contact info (+91 9625188029) about Jyotiraditya Khatua.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "query": {"type": "string"},
+                    "topic": {"type": "string"}
+                },
+                "required": ["query"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "general_conversation",
+            "description": "Tool for general chat.",
+            "parameters": {"type": "object", "properties": {"topic": {"type": "string"}}}
+        }
+    }
 ]
 
-GREETING_WORDS = ["hey", "hello", "hi", "hey there", "greetings", "good morning", "good evening", "hi there"]
+def execute_tool(name: str, args: dict):
+    if name == "greet_user":
+        return {"greeting": "Hello! Welcome to Jyotiraditya Khatua's Generative AI Portfolio. I’m his AI Assistant powered by Groq (GPT OSS 120B) with RAG capabilities. How can I help you today?"}
+    if name == "query_portfolio_knowledge":
+        return PORTFOLIO_KNOWLEDGE
+    return {"status": "ok"}
 
 @app.get("/")
 def read_root():
     return {
         "status": "online",
-        "service": "Jyotiraditya Khatua Portfolio FastAPI Backend",
-        "passout_batch": "2022-2026",
-        "developer": "Jyotiraditya Khatua"
+        "service": "Jyotiraditya Khatua Portfolio Groq AI Backend",
+        "model": MODEL_NAME,
+        "passout_batch": "2022-2026"
     }
 
 @app.post("/api/chat", response_model=ChatResponse)
 def portfolio_chat(request: ChatRequest):
     user_msg = request.message.strip()
-    clean_msg = user_msg.lower()
-    
     if not user_msg:
         raise HTTPException(status_code=400, detail="Message cannot be empty")
 
-    # Rule 1: Greetings check
-    words = re.findall(r'\w+', clean_msg)
-    if any(g in clean_msg for g in GREETING_WORDS) or (len(words) <= 2 and clean_msg in GREETING_WORDS):
-        return ChatResponse(response="Hello! Welcome to Jyotiraditya Khatua's Generative AI Portfolio. How can I help you today?")
+    system_prompt = (
+        "You are Jyotiraditya's AI Portfolio Assistant powered by Groq (GPT OSS 120B).\n"
+        "1. You have your own intelligent mind for general conversations.\n"
+        "2. FOR ANY QUESTIONS ABOUT JYOTIRADITYA KHATUA (skills, pass-out batch 2022-2026, Mobcoder experience, projects, contact +91 9625188029), YOU MUST CALL THE TOOL `query_portfolio_knowledge` TO RETRIEVE RAG KNOWLEDGE BEFORE ANSWERING.\n"
+        "3. Keep answers helpful and polite."
+    )
 
-    # Check if query matches portfolio context
-    is_portfolio_related = any(kw in clean_msg for kw in PORTFOLIO_KEYWORDS)
+    api_messages = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_msg}]
 
-    if not is_portfolio_related:
-        # Rule 2: Out of context fallback
-        return ChatResponse(response="I only give data based on Jyotiraditya Khatua portfolio.")
+    headers = {
+        "Authorization": f"Bearer {GROQ_API_KEY}",
+        "Content-Type": "application/json"
+    }
 
-    # In-context portfolio responses
-    if any(k in clean_msg for k in ["pass-out", "pass out", "graduation", "batch", "year"]):
-        resp = ("Jyotiraditya Khatua's B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 "
-                "(Graduation Year: 2026) from Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU) with CGPA 7.5.")
-    elif any(k in clean_msg for k in ["mobcoder", "experience", "work", "job", "appwars", "tanvika"]):
-        resp = ("Jyotiraditya is currently working as an AI/ML Engineer Trainee at Mobcoder (Noida), building AI backend services with FastAPI, LLMs, RAG, and LangGraph. "
-                "He previously worked as a Data Science Intern at Appwars Technologies and Data Analytics Intern at Tanvika Software.")
-    elif any(k in clean_msg for k in ["project", "medsync", "travel", "langgraph", "sentiment"]):
-        resp = ("Jyotiraditya has built several production-grade projects: "
-                "\n1. MedSync (AI Healthcare Assistant using FastAPI, Medical RAG & Agentic scheduling) "
-                "\n2. Multi-Agent AI Travel Planner (LangGraph state workflows) "
-                "\n3. Streamlit AI Sentiment Analysis Suite "
-                "\n4. OpenCV & CNN Real-Time Face Recognition Attendance System.")
-    elif any(k in clean_msg for k in ["skill", "stack", "python", "fastapi", "rag", "langchain"]):
-        resp = ("Core Skills & Stack:\n• Generative AI & Agents: LLMs, RAG, LangChain, LangGraph, FAISS, ChromaDB\n• Backend & ML: Python, FastAPI, PyTorch, Scikit-learn, OpenCV, MySQL\n• Analytics: Pandas, NumPy, Power BI, Streamlit.")
-    elif any(k in clean_msg for k in ["contact", "email", "phone", "whatsapp", "sms", "resume", "github", "linkedin"]):
-        resp = ("Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Phone / SMS: Jyotiraditya (+91 9625188029)\n• WhatsApp: https://wa.me/9625188029 (Chat with Jyotiraditya)\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: Download link available in header!")
-    else:
-        resp = ("Jyotiraditya Khatua is a Generative AI Engineer specializing in Python, FastAPI, RAG architectures, and LangGraph multi-agent systems. He is a 2022–2026 B.Tech CSE (AI-ML) graduate from AKTU Noida.")
+    payload = {
+        "model": MODEL_NAME,
+        "messages": api_messages,
+        "tools": TOOLS,
+        "tool_choice": "auto"
+    }
 
-    return ChatResponse(response=resp)
+    try:
+        res = requests.post(GROQ_ENDPOINT, headers=headers, json=payload, timeout=12)
+        if res.status_code != 200:
+            return ChatResponse(response="Jyotiraditya Khatua is a Generative AI Engineer (2022-2026 CSE AI-ML) working at Mobcoder Noida. Contact: jyotiraditya20122004@gmail.com / +91 9625188029.")
+
+        data = res.json()
+        choice = data.get("choices", [{}])[0]
+        msg_obj = choice.get("message", {})
+
+        if "tool_calls" in msg_obj and msg_obj["tool_calls"]:
+            api_messages.append(msg_obj)
+            for tool_call in msg_obj["tool_calls"]:
+                func_name = tool_call["function"]["name"]
+                try:
+                    func_args = json.loads(tool_call["function"].get("arguments", "{}"))
+                except:
+                    func_args = {}
+                result = execute_tool(func_name, func_args)
+                api_messages.append({
+                    "role": "tool",
+                    "tool_call_id": tool_call["id"],
+                    "name": func_name,
+                    "content": json.dumps(result)
+                })
+
+            final_res = requests.post(GROQ_ENDPOINT, headers=headers, json={"model": MODEL_NAME, "messages": api_messages}, timeout=12)
+            if final_res.status_code == 200:
+                final_data = final_res.json()
+                final_text = final_data.get("choices", [{}])[0].get("message", {}).get("content")
+                if final_text:
+                    return ChatResponse(response=final_text)
+
+        return ChatResponse(response=msg_obj.get("content", "Hello! Welcome to Jyotiraditya Khatua's Generative AI Portfolio. I’m his AI Assistant powered by Groq (GPT OSS 120B) with RAG capabilities. How can I help you today?"))
+    except Exception as e:
+        print("Backend Groq error:", e)
+        return ChatResponse(response="Jyotiraditya Khatua is a Generative AI Engineer (2022-2026 CSE AI-ML) working at Mobcoder Noida. Contact: jyotiraditya20122004@gmail.com / +91 9625188029.")
 
 if __name__ == "__main__":
     import uvicorn

@@ -34,7 +34,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
     {
       id: '1',
       sender: 'ai',
-      text: `Hello! I am Jyotiraditya's AI Portfolio Assistant powered by FastAPI backend. Ask me about his projects, skills, Mobcoder experience, or 2022–2026 pass-out batch!`,
+      text: `Hello! Welcome to Jyotiraditya Khatua's Generative AI Portfolio. I’m his AI Assistant powered by Groq (GPT OSS 120B) with RAG capabilities. How can I help you today?`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -51,48 +51,13 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
   }, [messages, isTyping]);
 
   const quickPrompts = [
-    "hey",
-    "What is your B.Tech pass-out year?",
+    "What can you help me with?",
     "Tell me about your experience at Mobcoder",
-    "What projects have you built?",
-    "What is your core tech stack?"
+    "What is your B.Tech pass-out year?",
+    "What AI projects have you built?",
+    "What is your core tech stack?",
+    "How can I contact Jyotiraditya?"
   ];
-
-  const processResponse = (userText: string): string => {
-    const clean = userText.trim().toLowerCase();
-
-    // Check greeting
-    const words = clean.split(/\s+/);
-    if (GREETING_WORDS.some(g => clean === g || clean.startsWith(g + ' ') || clean.endsWith(' ' + g))) {
-      return "Hello! Welcome to Jyotiraditya Khatua's Generative AI Portfolio. How can I help you today?";
-    }
-
-    // Check portfolio context
-    const isPortfolioRelated = PORTFOLIO_KEYWORDS.some(kw => clean.includes(kw));
-
-    if (!isPortfolioRelated) {
-      return "I only give data based on Jyotiraditya Khatua portfolio.";
-    }
-
-    // Portfolio answers
-    if (["pass-out", "pass out", "graduation", "batch", "year"].some(k => clean.includes(k))) {
-      return "Jyotiraditya Khatua's B.Tech (CSE - AI & ML) pass-out batch is 2022 – 2026 (Graduation Year: 2026) from Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU) with CGPA 7.5.";
-    }
-    if (["mobcoder", "experience", "work", "job", "appwars", "tanvika"].some(k => clean.includes(k))) {
-      return "Jyotiraditya is currently working as an AI/ML Engineer Trainee at Mobcoder (Noida), building AI backend services with FastAPI, LLMs, RAG, and LangGraph. He previously worked as a Data Science Intern at Appwars Technologies and Data Analytics Intern at Tanvika Software.";
-    }
-    if (["project", "medsync", "travel", "langgraph", "sentiment"].some(k => clean.includes(k))) {
-      return "Jyotiraditya has built several production-grade projects:\n1. MedSync (AI Healthcare Assistant using FastAPI, Medical RAG & Agentic scheduling)\n2. Multi-Agent AI Travel Planner (LangGraph state workflows)\n3. Streamlit AI Sentiment Analysis Suite\n4. OpenCV & CNN Real-Time Face Recognition Attendance System.";
-    }
-    if (["skill", "stack", "python", "fastapi", "rag", "langchain"].some(k => clean.includes(k))) {
-      return "Core Skills & Stack:\n• Generative AI & Agents: LLMs, RAG, LangChain, LangGraph, FAISS, ChromaDB\n• Backend & ML: Python, FastAPI, PyTorch, Scikit-learn, OpenCV, MySQL\n• Analytics: Pandas, NumPy, Power BI, Streamlit.";
-    }
-    if (["contact", "email", "phone", "whatsapp", "sms", "resume", "github", "linkedin"].some(k => clean.includes(k))) {
-      return "Contact Details:\n• Email: jyotiraditya20122004@gmail.com\n• Direct Contact / SMS: Jyotiraditya (+91 9625188029)\n• WhatsApp: https://wa.me/9625188029 (Chat with Jyotiraditya)\n• Location: Noida, UP\n• GitHub: github.com/Jyotir2004\n• Resume: PDF download available on the site!";
-    }
-
-    return "Jyotiraditya Khatua is a Generative AI Engineer specializing in Python, FastAPI, RAG architectures, and LangGraph multi-agent systems. He is a 2022–2026 B.Tech CSE (AI-ML) graduate from AKTU Noida.";
-  };
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || input;
@@ -105,26 +70,26 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
-    setMessages((prev) => [...prev, userMsg]);
+    const newMessagesHistory = [...messages, userMsg];
+    setMessages(newMessagesHistory);
     if (!textToSend) setInput('');
     setIsTyping(true);
 
     let aiResponseText = "";
     try {
-      // Call FastAPI backend endpoint
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify({ message: text, messagesHistory: newMessagesHistory })
       });
       if (res.ok) {
         const data = await res.json();
         aiResponseText = data.response;
       } else {
-        aiResponseText = processResponse(text);
+        aiResponseText = "Jyotiraditya Khatua is a Generative AI Engineer (2022–2026 B.Tech CSE AI-ML batch from AKTU Noida) currently working as an AI/ML Trainee at Mobcoder Noida. Contact: jyotiraditya20122004@gmail.com / +91 9625188029.";
       }
     } catch {
-      aiResponseText = processResponse(text);
+      aiResponseText = "Jyotiraditya Khatua is a Generative AI Engineer (2022–2026 B.Tech CSE AI-ML batch from AKTU Noida) currently working as an AI/ML Trainee at Mobcoder Noida. Contact: jyotiraditya20122004@gmail.com / +91 9625188029.";
     }
 
     const aiMsg: Message = {
@@ -161,7 +126,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
                 <span>Ask Jyotiraditya AI</span>
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               </h3>
-              <p className="text-xs text-slate-400">FastAPI Backend Portfolio Knowledge Assistant</p>
+              <p className="text-xs text-slate-400">Groq GPT OSS 120B Tool-Calling & RAG Agent</p>
             </div>
           </div>
 
@@ -218,7 +183,7 @@ export const AIChatModal: React.FC<AIChatModalProps> = ({ isOpen, onClose }) => 
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce"></span>
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '0.2s' }}></span>
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '0.4s' }}></span>
-                <span className="ml-1">FastAPI Backend evaluating query...</span>
+                <span className="ml-1">Groq GPT OSS 120B evaluating RAG tool calls...</span>
               </div>
             </div>
           )}
