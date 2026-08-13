@@ -34,12 +34,15 @@ export const ContactSection: React.FC = () => {
     return `Hello Jyotiraditya,\n\n${[nameStr, emailStr, subjectStr, msgStr].filter(Boolean).join('\n')}`;
   };
 
-  const [activationNotice, setActivationNotice] = useState(false);
+  const [smtpNotice, setSmtpNotice] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setActivationNotice(false);
+    setSmtpNotice(null);
+    setErrorMessage(null);
+    setSubmitted(false);
 
     try {
       const res = await fetch('/api/send-message', {
@@ -51,20 +54,21 @@ export const ContactSection: React.FC = () => {
       const data = await res.json();
       console.log('Contact form dispatch result:', data);
 
-      if (data.needsActivation) {
-        setActivationNotice(true);
+      if (data.requiresSmtpPass) {
+        setSmtpNotice("Gmail SMTP App Password is missing in .env.local. Please generate a 16-character Gmail App Password and set SMTP_PASS in .env.local.");
+      } else if (!res.ok || data.error) {
+        setErrorMessage(data.error || "Failed to send email via Gmail SMTP.");
       } else {
         setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 6000);
+        setFormState({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setSubmitted(false), 7000);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('Form submit dispatch error:', error);
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 6000);
+      setErrorMessage("Network error: Could not reach email API endpoint.");
     }
 
     setIsSubmitting(false);
-    setFormState({ name: '', email: '', subject: '', message: '' });
   };
 
   const getWhatsAppLink = () => {
@@ -265,25 +269,30 @@ export const ContactSection: React.FC = () => {
                 Fill out the details below to send a message via Direct API, open Google Messages SMS App, Gmail, or WhatsApp.
               </p>
 
-              {activationNotice && (
+              {smtpNotice && (
                 <div className="mb-6 p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex flex-col gap-2">
                   <div className="font-bold flex items-center gap-2 text-amber-400">
                     <Sparkles className="w-4 h-4" />
-                    <span>Action Required for Email Backup Delivery:</span>
+                    <span>Gmail SMTP Setup Needed:</span>
                   </div>
-                  <p>
-                    FormSubmit sent an activation email to <strong>jyotiraditya20122004@gmail.com</strong>.
+                  <p>{smtpNotice}</p>
+                  <p className="text-slate-300 font-mono text-[11px] bg-slate-900/80 p-2 rounded-lg border border-slate-800">
+                    SMTP_USER=jyotiraditya20122004@gmail.com<br />
+                    SMTP_PASS=your_gmail_app_password
                   </p>
-                  <p className="text-slate-300">
-                    Please open your Gmail inbox (or Spam folder), look for the email from FormSubmit titled <em>"Action Required: Activate FormSubmit"</em> and click <strong>"Activate Form"</strong> once.
-                  </p>
+                </div>
+              )}
+
+              {errorMessage && (
+                <div className="mb-6 p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold flex items-center gap-2">
+                  <span>⚠️ {errorMessage}</span>
                 </div>
               )}
 
               {submitted && (
                 <div className="mb-6 p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-2">
                   <Check className="w-4 h-4 text-emerald-400" />
-                  <span>Thank you! Your message has been sent directly to Jyotiraditya.</span>
+                  <span>Thank you! Your message has been sent directly to Jyotiraditya's Gmail inbox via Gmail SMTP!</span>
                 </div>
               )}
 
