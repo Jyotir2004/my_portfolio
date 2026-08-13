@@ -9,11 +9,12 @@ const PORTFOLIO_KNOWLEDGE = {
   personal_info: {
     name: "Jyotiraditya Khatua",
     role: "Generative AI Engineer",
+    date_of_birth: "20 December 2004",
     tagline: "Building autonomous AI Agents, RAG pipelines, and intelligent LLM workflows.",
     passout_batch: "2022 – 2026 (Graduation Year: 2026)",
     institution: "Mahatma Gandhi Mission's College of Engineering & Technology, Noida (Affiliated with AKTU)",
     degree: "B.Tech in Computer Science Engineering (Specialization in Artificial Intelligence & Machine Learning)",
-    cgpa: "7.5 / 10",
+    cgpa: "7.18 / 10",
     email: "jyotiraditya20122004@gmail.com",
     phone: "+91 9625188029",
     whatsapp: "https://wa.me/9625188029",
@@ -21,6 +22,23 @@ const PORTFOLIO_KNOWLEDGE = {
     github: "https://github.com/Jyotir2004",
     linkedin: "https://linkedin.com/in/Jyotiraditya-Khatua"
   },
+  education: [
+    {
+      level: "Undergraduate (B.Tech)",
+      degree: "B.Tech in Computer Science & Engineering (Specialization in AI & ML)",
+      institution: "Mahatma Gandhi Mission's College of Engineering & Technology (MGMCET), Noida",
+      affiliation: "Affiliated with Dr. A. P. J. Abdul Kalam Technical University (AKTU)",
+      batch: "2022 – 2026 (Graduation Year: 2026)",
+      cgpa: "7.18 / 10",
+      highlights: "Specialized in Artificial Intelligence, Machine Learning, Deep Learning, RAG, and Autonomous AI Agents."
+    },
+    {
+      level: "Secondary Senior High School (Class XII)",
+      institution: "Adarsh Public School",
+      period: "2022 – 2023",
+      highlights: "Completed Class XII High School education focusing on Physics, Chemistry, Mathematics, and Computer Science."
+    }
+  ],
   experiences: [
     {
       role: "AI/ML Engineer Trainee",
@@ -109,7 +127,7 @@ const TOOLS = [
           query: { type: "string", description: "The specific question or topic to search in the portfolio database." },
           topic: {
             type: "string",
-            enum: ["personal_info", "passout_batch", "experience", "mobcoder", "projects", "skills", "contact"],
+            enum: ["personal_info", "education", "passout_batch", "experience", "mobcoder", "projects", "skills", "contact"],
             description: "The topic area to retrieve information for."
           }
         },
@@ -144,10 +162,13 @@ function executeTool(name: string, args: any): any {
     const q = (args.query || "").toLowerCase();
     const topic = args.topic;
 
-    if (topic === "passout_batch" || q.includes("pass") || q.includes("batch") || q.includes("year") || q.includes("aktu") || q.includes("college")) {
+    if (topic === "education" || topic === "passout_batch" || q.includes("school") || q.includes("12th") || q.includes("education") || q.includes("pass") || q.includes("batch") || q.includes("year") || q.includes("aktu") || q.includes("college") || q.includes("btech") || q.includes("degree")) {
       return {
-        topic: "Education & Passout Batch",
-        data: PORTFOLIO_KNOWLEDGE.personal_info
+        topic: "Education & Academic Background",
+        data: {
+          education_history: PORTFOLIO_KNOWLEDGE.education,
+          personal_info: PORTFOLIO_KNOWLEDGE.personal_info
+        }
       };
     }
 
@@ -210,9 +231,10 @@ export async function POST(request: Request) {
 RULES OF ENGAGEMENT:
 1. You have your own intelligent mind to hold casual conversations, answer general questions, or chat naturally.
 2. For greetings (e.g. "hi", "hello"), you may call the tool \`greet_user\` or respond warmly using your mind.
-3. CRITICAL: Whenever the user asks ANY question about Jyotiraditya Khatua (such as his 2022–2026 pass-out batch, B.Tech education at AKTU, Mobcoder experience, projects like MedSync/Travel Planner, skills, FastAPI, RAG, contact details, resume, email, or phone +91 9625188029), YOU MUST CALL THE TOOL \`query_portfolio_knowledge\` TO RETRIEVE AUTHORITATIVE RAG KNOWLEDGE BEFORE ANSWERING.
+3. CRITICAL: Whenever the user asks ANY question about Jyotiraditya Khatua (such as his DOB: 20 Dec 2004, 2022–2026 pass-out batch, B.Tech education at AKTU, Mobcoder experience, projects like MedSync/Travel Planner, skills, FastAPI, RAG, contact details, resume, email, or phone +91 9625188029), YOU MUST CALL THE TOOL \`query_portfolio_knowledge\` TO RETRIEVE AUTHORITATIVE RAG KNOWLEDGE BEFORE ANSWERING.
 4. Always provide helpful, polite, structured answers based on the retrieved RAG tool data when answering portfolio questions.
-5. If the question is completely unrelated to Jyotiraditya or general chat, answer politely using your general knowledge while reminding the user you are specialized as Jyotiraditya's portfolio assistant.`;
+5. If the question is completely unrelated to Jyotiraditya or general chat, answer politely using your general knowledge while reminding the user you are specialized as Jyotiraditya's portfolio assistant.
+6. MANDATORY MARKDOWN FORMATTING: You MUST format EVERY single response in clean, beautiful GitHub Flavored Markdown (using bold headers, markdown tables, bullet lists, bold highlights, or code snippets). Never output raw unformatted plain text.`;
 
     const apiMessages: any[] = [
       { role: "system", content: systemPrompt }
@@ -263,7 +285,7 @@ RULES OF ENGAGEMENT:
         let functionArgs = {};
         try {
           functionArgs = JSON.parse(toolCall.function.arguments || "{}");
-        } catch {}
+        } catch { }
 
         const toolResult = executeTool(functionName, functionArgs);
 

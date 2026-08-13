@@ -44,6 +44,7 @@ export interface Education {
 export const PERSONAL_INFO = {
   name: "Jyotiraditya Khatua",
   role: "Generative AI Engineer",
+  dateOfBirth: "20 December 2004",
   tagline: "Building autonomous AI Agents, RAG pipelines, and intelligent LLM workflows.",
   email: "jyotiraditya20122004@gmail.com",
   phone: "+91 9625188029",
@@ -62,7 +63,7 @@ export const EDUCATION_LIST: Education[] = [
     institution: "Mahatma Gandhi Mission's College of Engineering & Technology, Noida",
     affiliation: "Affiliated with Dr. A. P. J. Abdul Kalam Technical University (AKTU)",
     period: "2022 – 2026",
-    cgpa: "7.5 / 10",
+    cgpa: "7.18 / 10",
     details: [
       "Specialized curriculum in Artificial Intelligence, Machine Learning, Deep Learning, Data Structures & Algorithms.",
       "Hands-on research and practical implementation in LangChain, RAG architectures, and multi-agent systems.",

@@ -39,7 +39,7 @@ PORTFOLIO_KNOWLEDGE = {
         "passout_batch": "2022 – 2026 (Graduation Year: 2026)",
         "institution": "Mahatma Gandhi Mission's College of Engineering & Technology, Noida (AKTU)",
         "degree": "B.Tech in Computer Science Engineering (Specialization in AI & ML)",
-        "cgpa": "7.5 / 10",
+        "cgpa": "7.18 / 10",
         "email": "jyotiraditya20122004@gmail.com",
         "phone": "+91 9625188029",
         "whatsapp": "https://wa.me/9625188029",
